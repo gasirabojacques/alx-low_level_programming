@@ -6,11 +6,6 @@
  * @b: para 2
  * Return: sum
  */
-
-int add(int a, int b)
-{
-int c;
-
-c = a +b;
-return (c);
+int add(int num1, int num2) {
+  return num1 + num2;
 }
