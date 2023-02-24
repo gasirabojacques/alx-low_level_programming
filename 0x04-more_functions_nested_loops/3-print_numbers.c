@@ -1,7 +1,7 @@
 #include "main.h"
 #include <stdio.h>
 #define _CRT_SECURE_NO_WORNINGS
-
+int _putchar(char c);
 /**
  * print_number - print the number since 0 up to 9
  * Return: The numbers since 0 up to 9
