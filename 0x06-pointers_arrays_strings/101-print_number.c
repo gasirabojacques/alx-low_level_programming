@@ -2,17 +2,14 @@
 int _putchar(char c);
 
 /**
- * print_number - print numbers chars
+ * print_number - print number chars
  * @n: integer params
- * Return: 0
+ * return: 0
  */
-
 void print_number(int n)
 {
 unsigned int n1;
-
 n1 = n;
-
 if (n < 0)
 {
 _putchar('-');
