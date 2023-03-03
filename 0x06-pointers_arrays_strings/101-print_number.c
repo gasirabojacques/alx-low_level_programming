@@ -1,26 +1,22 @@
 #include "main.h"
-
+#include <stdio.h>
 int _putchar(char c);
 
 /**
- * print_number - Prints an integer using _putchar.
- * @n: The integer to print.
+ * print_number - print numbers chars
+ * @n: integer params
+ * return: 0
  */
 void print_number(int n)
 {
-int divisor = 1;
 if (n < 0)
 {
 _putchar('-');
 n = -n;
 }
-while (n / divisor >= 10)
-divisor *= 10;
-while (divisor != 0)
+if (n / 10 > 0)
 {
-int digit = n / divisor;
-_putchar(digit + '0');
-n -= digit * divisor;
-divisor /= 10;
+print_number(n / 10);
 }
+_putchar(n % 10 + '0');
 }
