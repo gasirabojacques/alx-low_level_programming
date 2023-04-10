@@ -1,11 +1,13 @@
 #include "main.h"
 #include "stdio.h"
 /**
- * _power - calcurate the of a number.
- * @base: base of the exponet
- * @pow power of the exponet
- * return: Result of base raised to the power of pow.
- **/
+ * _power - calculates the power of a base to the exponent
+ * @base: the base
+ * @pow: the exponent
+ *
+ * Return: the result of the base raised to the exponent
+ */
+
 unsigned long int _power(unsigned int base, unsigned int pow)
 {
 unsigned long int num = 1;
