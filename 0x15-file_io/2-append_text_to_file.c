@@ -25,7 +25,11 @@ return (-1);
 if (text_content != NULL)
 {
 text_length = strlen(text_content);
-fwrite(text_content, 1, text_length, file);
+if (fwrite(text_content, 1, text_length, file) != text_length)
+{
+fclose(file);
+return (-1);
+}
 }
 fclose(file);
 return (1);
