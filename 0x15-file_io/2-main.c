@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "main.h"
-
+#include <stddef.h>
 /**
  * main - check the code
  *
  * Return: Always 0.
  */
+size_t _strlen(char *str);
 int append_text_to_file(const char *filename, char *text_content);
 int main(int ac, char **av)
 {
