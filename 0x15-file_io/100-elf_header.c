@@ -5,13 +5,18 @@
 #include <stdint.h>
 #include <string.h>
 
-
 #define SIZE 16
 
 /**
  * display_magic - Displays the magic numbers from the ELF header buffer.
  * @buffer: Buffer containing the ELF header.
+ * @size: Size of the magic numbers in bytes.
+ *
+ * This function takes a buffer containing the ELF header and the size of the
+ * magic numbers, and displays them in hexadecimal format. The size parameter
+ * specifies the number of bytes to be displayed from the buffer.
  */
+
 
 
 void display_magic(uint8_t *buffer, int size)
@@ -74,7 +79,17 @@ printf("Entry point address : 0x%lx\n", entryPoint);
 }
 
 
-
+/**
+ * display_elf_header - Displays various information from the ELF header.
+ * @dir: File descriptor of the ELF file.
+ *
+ * This function reads the ELF header from the file descriptor into a buffer,
+ * and then calls other functions to display different information from the
+ * ELF header, including the magic number, class and version, and type.
+ * If the read operation fails or does not read the expected number of bytes,
+ * an error message is printed to stderr and the program exits
+ * with an error code of 98.
+ */
 
 void display_elf_header(int dir)
 {
@@ -93,14 +108,20 @@ display_type(buffer);
 }
 
 /**
- * main - Entry point. Validates command-line
- * arguments, opens ELF file,
+ * main - Entry point. Validates command-line arguments, opens ELF file,
  * calls 'display_elf_header', and returns exit code.
  * @argc: Number of command-line arguments.
  * @argv: Array of command-line argument strings.
  *
- * Returns: 0 on success, or exit code on failure.
+ * This function serves as the entry point of the program. It validates the
+ * command-line arguments, opens the ELF file specified as an argument, calls
+ * the 'display_elf_header' function to display the ELF header information,
+ * and returns the exit code. If any error occurs, an appropriate error message
+ * is printed to stderr and the program exits with the error code 98.
+ *
+ * Return: 0 on success, or exit code on failure.
  */
+
 
 int main(int argc, char *argv[])
 {
