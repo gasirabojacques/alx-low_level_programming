@@ -5,38 +5,41 @@
 #include <fcntl.h>
 #include <stddef.h>
 
-
 /**
- * read_textfile - reads a text file and prints the letters
- * @filename: filename.
- * @letters: numbers of letters printed.
+ * read_textfile - reads a text file and prints it to the standard output
+ * @filename: name of the file to be read
+ * @letters: number of letters to read and print
+ * Return: the number of letters printed, or 0 if it failed
  *
- * Return: numbers of letters printed. It fails, returns 0.
  */
+
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-int dir;
-ssize_t d, r;
+int fd;
+int i, y;
 char *buf;
-
 if (!filename)
 return (0);
-
-dir = open(filename, O_RDONLY);
-
-if (dir == -1)
+fd = open(filename, O_RDONLY);
+if (fd < 0)
 return (0);
-
-buf = malloc(sizeof(char) * (letters));
+buf = malloc(sizeof(char) * letters);
 if (!buf)
 return (0);
-
-d = read(dir, buf, letters);
-r = write(STDOUT_FILENO, buf, d);
-
-close(dir);
-
+i = read(fd, buf, letters);
+if (i < 0)
+{
 free(buf);
-
-return (r);
+return (0);
+}
+buf[i] = '\0';
+close(fd);
+y = write(STDOUT_FILENO, buf, i);
+if (y < 0)
+{
+free(buf);
+return (0);
+}
+free(buf);
+return (y);
 }
