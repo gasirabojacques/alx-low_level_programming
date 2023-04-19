@@ -3,113 +3,73 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-/**
- * check97 - checks for the correct number of arguments
- * @argc: number of arguments
- *
- * Return: void
- */
-void check97(int argc)
-{
-if (argc != 3)
-{
-dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
-exit(97);
-}
-}
 
 /**
- * check98 - checks that file_from exists and can be read
- * @check: checks if true of false
- * @file: file_from name
- * @fd_from: file descriptor of file_from, or -1
- * @fd_to: file descriptor of file_to, or -1
- *
- * Return: void
+ * error_file - checks if files can be opened.
+ * @file_from: file_from.
+ * @file_to: file_to.
+ * @argv: arguments vector.
+ * Return: no return.
  */
-void check98(ssize_t check, char *file, int dir_source, int dir_destin)
+void error_file(int file_from, int file_to, char *argv[])
 {
-if (check == -1)
+if (file_from == -1)
 {
-dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file);
-if (dir_source != -1)
-close(dir_source);
-if (dir_destin != -1)
-close(dir_destin);
+dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 exit(98);
 }
-}
-
-/**
- * check99 - checks that file_to was created and/or can be written to
- * @check: checks if true of false
- * @file: file_to name
- * @fd_from: file descriptor of file_from, or -1
- * @fd_to: file descriptor of file_to, or -1
- *
- * Return: void
- */
-void check99(ssize_t check, char *file, int dir_source, int dir_destin)
+if (file_to == -1)
 {
-if (check == -1)
-{
-dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file);
-if (dir_source != -1)
-close(dir_source);
-if (dir_destin != -1)
-close(dir_destin);
+dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
 exit(99);
 }
 }
 
 /**
- * check100 - checks that file descriptors were closed properly
- * @check: checks if true or false
- * @fd: file descriptor
- *
- * Return: void
- */
-void check100(int check, int dir)
-{
-if (check == -1)
-{
-dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", dir);
-exit(100);
-}
-}
-/**
- * main - opies the content of a file to another file.
- * @argc: number of arguments passed
- * @argv: array of pointers to the arguments
- *
- * Return: 0 on success
+ * main - check the code for Holberton School students.
+ * @argc: number of arguments.
+ * @argv: arguments vector.
+ * Return: Always 0.
  */
 int main(int argc, char *argv[])
 {
-int dir_source, dir_destin, close_source, close_destin;
-ssize_t lenr, lenw;
-char buffer[1024];
-mode_t file_perm;
+int file_from, file_to, err_close;
+ssize_t nchars, nwr;
+char buf[1024];
 
-check97(argc);
-dir_source = open(argv[1], O_RDONLY);
-check98((ssize_t)dir_source, argv[1], -1, -1);
-file_perm = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
-dir_destin = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, file_perm);
-check99((ssize_t)dir_destin, argv[2], dir_source, -1);
-lenr = 1024;
-while (lenr == 1024)
+if (argc != 3)
 {
-lenr = read(dir_source, buffer, 1024);
-check98(lenr, argv[1], dir_source, dir_destin);
-lenw = write(dir_destin, buffer, lenr);
-if (lenw != lenr)
-lenw = -1;
-check99(lenw, argv[2], dir_source, dir_destin);
+dprintf(STDERR_FILENO, "%s\n", "Usage: cp file_from file_to");
+exit(97);
 }
-close_destin = close(dir_destin);
-close_source = close(dir_source);
-check100(close_destin, dir_destin);
-check100(close_source, dir_source);
+
+file_from = open(argv[1], O_RDONLY);
+file_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0664);
+error_file(file_from, file_to, argv);
+
+nchars = 1024;
+while (nchars == 1024)
+{
+nchars = read(file_from, buf, 1024);
+if (nchars == -1)
+error_file(-1, 0, argv);
+nwr = write(file_to, buf, nchars);
+if (nwr == -1)
+error_file(0, -1, argv);
+}
+
+err_close = close(file_from);
+if (err_close == -1)
+{
+dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", file_from);
+exit(100);
+}
+
+err_close = close(file_to);
+if (err_close == -1)
+{
+dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", file_from);
+exit(100);
+}
 return (0);
 }
