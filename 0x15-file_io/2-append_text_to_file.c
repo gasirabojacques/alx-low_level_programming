@@ -1,59 +1,42 @@
 #include "main.h"
-#include <stddef.h>
 #include <stdio.h>
-#include <string.h>
-#include <stdint.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 /**
- * _strlen - finds the length of a string
- * @str: pointer to the string
+ * append_text_to_file - appends text at the end of a file
+ * @filename: filename.
+ * @text_content: added content.
  *
- * Return: length of the string
+ * Return: 1 if the file exists. -1 if the fails does not exist
+ * or if it fails.
  */
-
-size_t _strlen(char *str)
-{
-size_t k;
-
-for (k = 0; str[k] != '\0'; k++)
-;
-return (k);
-}
-/**
- * append_text_to_file - appends a text at the end of a file.
- * @filename: name of the file
- * @text_content: NULL terminated string to add at the end of the file
- *
- * Return: 1 on success and -1 on failure
- */
-
 int append_text_to_file(const char *filename, char *text_content)
 {
-FILE *file;
-long file_size;
+int fd;
+int nletters;
+int rwr;
 
-if (filename == NULL)
+if (!filename)
 return (-1);
 
-file = fopen(filename, "a");
-if (file == NULL)
+fd = open(filename, O_WRONLY | O_APPEND);
+
+if (fd == -1)
 return (-1);
 
-if (text_content != NULL)
+if (text_content)
 {
-fwrite(text_content, 1, _strlen(text_content), file);
+for (nletters = 0; text_content[nletters]; nletters++)
+;
+
+rwr = write(fd, text_content, nletters);
+
+if (rwr == -1)
+return (-1);
 }
 
-fclose(file);
-
-file = fopen(filename, "r");
-return (-1);
-
-fseek(file, 0, SEEK_END);
-file_size = ftell(file);
-fclose(file);
-
-if (file_size < 0)
-return (-1);
+close(fd);
 
 return (1);
 }
