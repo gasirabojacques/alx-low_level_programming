@@ -7,7 +7,7 @@
 
 void print_binary(unsigned long int n)
 {
-int c, j;
+int counter, k;
 int flag = 0;
 
 if (n == 0)
@@ -16,10 +16,10 @@ putchar('0');
 return;
 }
 
-for (c = 63; c >= 0; c--)
+for (counter = 63; counter >= 0; counter--)
 {
-j = n >> c;
-if (j & 1)
+k = n >> counter;
+if (k & 1)
 {
 flag = 1;
 putchar('1');
