@@ -10,18 +10,18 @@
 
 unsigned int flip_bits(unsigned long int n, unsigned long int m)
 {
-unsigned long int checker, dif, size;
-unsigned int i, count = 0;
+unsigned long int check, dif, size;
+unsigned int index, count = 0;
 
-checker = 1;
+check = 1;
 dif = n ^ m;
 size = (sizeof(unsigned long int) * 8);
 
-for (i = 0; i < size; i++)
+for (index = 0; index < size; index++)
 {
-if (checker == (dif & checker))
+if (check == (dif & check))
 count++;
-checker <<= 1;
+check <<= 1;
 }
 
 return (count);
