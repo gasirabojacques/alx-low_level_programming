@@ -33,7 +33,7 @@ return (0);
 }
 
 free(buffer);
-close(0);
+close(k);
 
 return (x);
 }
